@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital ID - Student Wallet</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+</head>
+<body class="bg-gray-100">
+    <nav class="gradient-bg text-white shadow-lg">
+        <div class="container mx-auto px-6 py-3">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-graduation-cap text-2xl"></i>
+                    <span class="font-bold text-xl">Student Wallet</span>
+                </div>
+                <div class="flex items-center space-x-6">
+                    <a href="dashboard.html" class="hover:text-purple-200 transition">Dashboard</a>
+                    <a href="digital-id.html" class="hover:text-purple-200 transition">Digital ID</a>
+                    <a href="profile.html" class="hover:text-purple-200 transition">Profile</a>
+                    <button onclick="logout()" class="bg-red-500 px-4 py-2 rounded-lg hover:bg-red-600 transition">
+                        <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="container mx-auto px-6 py-8">
+        <div class="max-w-2xl mx-auto">
+            <div class="bg-white rounded-2xl shadow-2xl overflow-hidden">
+                <!-- Card Header -->
+                <div class="gradient-bg text-white p-8 text-center">
+                    <i class="fas fa-id-card text-5xl mb-4"></i>
+                    <h1 class="text-3xl font-bold">Digital Student ID</h1>
+                    <p class="text-purple-200 mt-2">Official University Identification</p>
+                </div>
+                
+                <!-- Card Content -->
+                <div class="p-8" id="idCard">
+                    <div class="text-center mb-6">
+                        <div class="w-32 h-32 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-user-graduate text-5xl text-white"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold text-gray-800" id="studentName">Loading...</h2>
+                        <p class="text-gray-600" id="studentEmail">Loading...</p>
+                    </div>
+                    
+                    <div class="border-t border-b border-gray-200 py-4 mb-4">
+                        <div class="flex justify-between mb-3">
+                            <span class="text-gray-600 font-semibold">Student ID:</span>
+                            <span class="text-gray-800" id="studentId">Loading...</span>
+                        </div>
+                        <div class="flex justify-between mb-3">
+                            <span class="text-gray-600 font-semibold">Department:</span>
+                            <span class="text-gray-800" id="department">Computer Science</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600 font-semibold">Semester:</span>
+                            <span class="text-gray-800" id="semester">3rd Semester</span>
+                        </div>
+                    </div>
+                    
+                    <!-- QR Code -->
+                    <div class="text-center">
+                        <div id="qrcode" class="flex justify-center mb-4"></div>
+                        <p class="text-sm text-gray-500">Scan to verify student identity</p>
+                        <button onclick="downloadID()" class="mt-4 bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition">
+                            <i class="fas fa-download mr-2"></i>Download ID Card
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const token = localStorage.getItem('token');
+        if (!token) window.location.href = 'index.html';
+        
+        async function loadDigitalID() {
+            try {
+                const response = await fetch('http://localhost/student-wallet/backend/api/profile.php', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    const user = data.user;
+                    document.getElementById('studentName').innerText = user.name;
+                    document.getElementById('studentEmail').innerText = user.email;
+                    document.getElementById('studentId').innerText = user.student_id;
+                    document.getElementById('department').innerText = user.department || 'Computer Science';
+                    document.getElementById('semester').innerText = user.semester ? `${user.semester}th Semester` : '3rd Semester';
+                    
+                    // Generate QR Code
+                    const qrData = JSON.stringify({
+                        id: user.student_id,
+                        name: user.name,
+                        email: user.email,
+                        university: "University System"
+                    });
+                    new QRCode(document.getElementById("qrcode"), {
+                        text: qrData,
+                        width: 150,
+                        height: 150
+                    });
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+        
+        function logout() {
+            localStorage.removeItem('token');
+            window.location.href = 'index.html';
+        }
+        
+        function downloadID() {
+            alert("ID Card downloaded (PDF generation would be implemented here)");
+        }
+        
+        loadDigitalID();
+    </script>
+</body>
+</html>

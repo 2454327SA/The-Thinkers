@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Student Wallet</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-100">
+    <!-- Navigation -->
+    <nav class="gradient-bg text-white shadow-lg">
+        <div class="container mx-auto px-6 py-3">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-graduation-cap text-2xl"></i>
+                    <span class="font-bold text-xl">Student Wallet</span>
+                </div>
+                <div class="flex items-center space-x-6">
+                    <a href="dashboard.html" class="hover:text-purple-200 transition">Dashboard</a>
+                    <a href="digital-id.html" class="hover:text-purple-200 transition">Digital ID</a>
+                    <a href="profile.html" class="hover:text-purple-200 transition">Profile</a>
+                    <button onclick="logout()" class="bg-red-500 px-4 py-2 rounded-lg hover:bg-red-600 transition">
+                        <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <div class="container mx-auto px-6 py-8">
+        <!-- Welcome Section -->
+        <div class="bg-white rounded-xl shadow-lg p-6 mb-8 animate-fade-in-up">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2" id="welcomeMessage">Welcome back!</h1>
+            <p class="text-gray-600">Manage your digital ID and university services</p>
+        </div>
+        
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl shadow-lg p-6 text-white">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <p class="text-blue-100">Digital ID Status</p>
+                        <p class="text-2xl font-bold">Active ✓</p>
+                    </div>
+                    <i class="fas fa-id-card text-4xl opacity-50"></i>
+                </div>
+            </div>
+            
+            <div class="bg-gradient-to-r from-green-500 to-green-600 rounded-xl shadow-lg p-6 text-white">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <p class="text-green-100">Last Login</p>
+                        <p class="text-2xl font-bold" id="lastLogin">Today</p>
+                    </div>
+                    <i class="fas fa-clock text-4xl opacity-50"></i>
+                </div>
+            </div>
+            
+            <div class="bg-gradient-to-r from-purple-500 to-purple-600 rounded-xl shadow-lg p-6 text-white">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <p class="text-purple-100">Student Since</p>
+                        <p class="text-2xl font-bold" id="studentSince">2024</p>
+                    </div>
+                    <i class="fas fa-calendar text-4xl opacity-50"></i>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Quick Actions -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-4">
+                    <i class="fas fa-bolt text-purple-600 mr-2"></i>Quick Actions
+                </h2>
+                <div class="space-y-3">
+                    <button onclick="window.location.href='digital-id.html'" 
+                            class="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition">
+                        <i class="fas fa-qrcode mr-2"></i>View Digital ID
+                    </button>
+                    <button onclick="window.location.href='profile.html'" 
+                            class="w-full bg-gray-200 text-gray-800 py-3 rounded-lg hover:bg-gray-300 transition">
+                        <i class="fas fa-user-edit mr-2"></i>Update Profile
+                    </button>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-4">
+                    <i class="fas fa-bell text-purple-600 mr-2"></i>Recent Activity
+                </h2>
+                <div class="space-y-3" id="activityLog">
+                    <div class="flex items-center text-gray-600">
+                        <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                        <span>Logged in successfully</span>
+                    </div>
+                    <div class="flex items-center text-gray-600">
+                        <i class="fas fa-id-card text-purple-500 mr-3"></i>
+                        <span>Digital ID accessed</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="js/dashboard.js"></script>
+</body>
+</html>
